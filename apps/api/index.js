@@ -3,7 +3,7 @@ import cors from 'cors';
 
 const app = express();
 app.use(cors());
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 app.get('/health', (req, res) => {
     res.json({status: 'ok'});
