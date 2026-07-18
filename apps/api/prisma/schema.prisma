@@ -14,7 +14,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model HealthCheck {
+model User {
   id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  role      String   @default("candidate")
   createdAt DateTime @default(now())
+}
+
+model Attribute {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String
+  type        String
+  categoryId  Int
+  category    AttributeCategory @relation(fields: [categoryId], references: [id])
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  positionLinks PositionAttribute[]
+  accessRuleLinks PositionAccessRule[]
+}
+
+model AttributeCategory {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  attributes Attribute[]
+}
+
+model Position {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  attributes  PositionAttribute[]
+  accessRules PositionAccessRule[]
+  projectTags   String[]
+  maxProjects   Int      @default(3)
+}
+
+model PositionAttribute {
+  id          Int       @id @default(autoincrement())
+  positionId  Int
+  position    Position  @relation(fields: [positionId], references: [id])
+  attributeId Int
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+}
+
+model PositionAccessRule {
+  id          Int       @id @default(autoincrement())
+  positionId  Int
+  position    Position  @relation(fields: [positionId], references: [id])
+  attributeId Int
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+  operator    String
+  value       String
 }
