@@ -3,12 +3,14 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import passport from './passport.js';
 import attributesRouter from './routes/attributes.js';
+import positionsRouter from './routes/positions.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 app.use('/attributes', attributesRouter);
+app.use('/positions', positionsRouter);
 
 const port = process.env.PORT || 4000;
 
