@@ -15,6 +15,7 @@ function Navbar() {
         <Link className="nav-link text-white" to="/attributes">Attributes</Link>
         <Link className="nav-link text-white" to="/positions">Positions</Link>
         <Link className="nav-link text-white" to="/cvs">My CVs</Link>
+        <Link className="nav-link text-white" to="/projects">Projects</Link>
       </div>
       <div className="ms-auto">
         {isLoggedIn ? (
