@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { apiFetch } from '../api';
+import { apiFetch, getCurrentRole } from '../api';
 
 function PositionDetail() {
   const { id } = useParams();
@@ -14,6 +14,9 @@ function PositionDetail() {
   const [editingInfo, setEditingInfo] = useState(false);
 
   const [attributeToAdd, setAttributeToAdd] = useState('');
+
+  const role = getCurrentRole();
+  const canManage = role === 'recruiter' || role === 'admin';
 
   async function loadPosition() {
     try {
@@ -113,9 +116,11 @@ function PositionDetail() {
         <div className="mt-3">
           <h1>{position.title}</h1>
           <p>{position.description}</p>
-          <button className="btn btn-sm btn-outline-primary" onClick={() => setEditingInfo(true)}>
-            Edit Title/Description
-          </button>
+          {canManage && (
+            <button className="btn btn-sm btn-outline-primary" onClick={() => setEditingInfo(true)}>
+              Edit Title/Description
+            </button>
+          )}
         </div>
       )}
 
@@ -124,22 +129,26 @@ function PositionDetail() {
         {position.attributes.map((posAttr) => (
           <li key={posAttr.attributeId} className="list-group-item d-flex justify-content-between align-items-center">
             {posAttr.attribute.name}
-            <button className="btn btn-sm btn-danger" onClick={() => handleRemoveAttribute(posAttr.attributeId)}>
-              Remove
-            </button>
+            {canManage && (
+              <button className="btn btn-sm btn-danger" onClick={() => handleRemoveAttribute(posAttr.attributeId)}>
+                Remove
+              </button>
+            )}
           </li>
         ))}
       </ul>
-
-      <div className="d-flex gap-2">
-        <select className="form-select" value={attributeToAdd} onChange={(e) => setAttributeToAdd(e.target.value)}>
-          <option value="">Select an attribute to add...</option>
-          {attributesNotYetAdded.map((attr) => (
-            <option key={attr.id} value={attr.id}>{attr.name}</option>
-          ))}
-        </select>
-        <button className="btn btn-primary" onClick={handleAddAttribute}>Add</button>
-      </div>
+      
+      {canManage && (
+        <div className="d-flex gap-2">
+          <select className="form-select" value={attributeToAdd} onChange={(e) => setAttributeToAdd(e.target.value)}>
+            <option value="">Select an attribute to add...</option>
+            {attributesNotYetAdded.map((attr) => (
+              <option key={attr.id} value={attr.id}>{attr.name}</option>
+            ))}
+          </select>
+          <button className="btn btn-primary" onClick={handleAddAttribute}>Add</button>
+        </div>
+      )}
     </div>
   );
 }
