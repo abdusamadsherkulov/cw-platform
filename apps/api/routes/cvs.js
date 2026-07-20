@@ -18,12 +18,44 @@ router.get('/', requireAuth, async (req, res) => {
 router.post('/', requireAuth, async (req, res) => {
   const { positionId } = req.body;
 
+  const position = await prisma.position.findUnique({
+    where: { id: positionId },
+    include: { accessRules: { include: { attribute: true } } },
+  });
+
+  if (!position) return res.status(404).json({ error: 'Position not found' });
+
+  // check every access rule against this candidate's attribute values
+  for (const rule of position.accessRules) {
+    const userValue = await prisma.attributeValue.findUnique({
+      where: { userId_attributeId: { userId: req.user.userId, attributeId: rule.attributeId } },
+    });
+
+    const passes = checkRule(rule, userValue?.value);
+    if (!passes) {
+      return res.status(403).json({
+        error: `You don't meet the requirement for "${rule.attribute.name}"`,
+      });
+    }
+  }
+
   const cv = await prisma.cV.create({
     data: { userId: req.user.userId, positionId },
   });
 
   res.status(201).json(cv);
 });
+
+function checkRule(rule, actualValue) {
+  if (actualValue === undefined) return false; // never filled in, can't pass any rule
+
+  switch (rule.operator) {
+    case 'gt': return Number(actualValue) > Number(rule.value);
+    case 'lt': return Number(actualValue) < Number(rule.value);
+    case 'eq': return actualValue === rule.value;
+    default: return false;
+  }
+}
 
 // get one CV, fully assembled from profile values + projects
 router.get('/:id', requireAuth, async (req, res) => {

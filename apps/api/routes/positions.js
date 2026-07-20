@@ -96,4 +96,25 @@ router.delete('/:id/attributes/:attributeId', requireAuth, requireRole('recruite
   res.status(204).send();
 });
 
+// add an access rule to a position
+router.post('/:id/access-rules', requireAuth, requireRole('recruiter', 'admin'), async (req, res) => {
+  const positionId = Number(req.params.id);
+  const { attributeId, operator, value } = req.body;
+
+  const rule = await prisma.positionAccessRule.create({
+    data: { positionId, attributeId, operator, value },
+    include: { attribute: true },
+  });
+
+  res.status(201).json(rule);
+});
+
+// remove an access rule
+router.delete('/:id/access-rules/:ruleId', requireAuth, requireRole('recruiter', 'admin'), async (req, res) => {
+  await prisma.positionAccessRule.deleteMany({
+    where: { id: Number(req.params.ruleId), positionId: Number(req.params.id) },
+  });
+  res.status(204).send();
+});
+
 export default router;
