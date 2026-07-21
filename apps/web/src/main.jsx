@@ -14,6 +14,7 @@ import Projects from './pages/Projects.jsx';
 import Profile from './pages/Profile.jsx';
 import Users from './pages/Users.jsx';
 import AllCVs from './pages/AllCVs.jsx';
+import Login from './pages/Login.jsx';
 import './theme.css';
 import './i18n.js';
 
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/users" element={<Users />} />
         <Route path="/all-cvs" element={<AllCVs />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

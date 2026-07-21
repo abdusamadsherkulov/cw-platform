@@ -121,22 +121,9 @@ function Navbar() {
             {t('nav.logout')}
           </button>
         ) : (
-          <div className="position-relative">
-            <button className="btn btn-outline-light btn-sm" onClick={() => setShowSignInOptions((s) => !s)}>
-              Sign In
-            </button>
-
-            {showSignInOptions && (
-              <div className="position-absolute bg-white text-dark p-2 shadow" style={{ top: '100%', right: 0, zIndex: 10, minWidth: '180px' }}>
-                <a className="btn btn-outline-dark btn-sm w-100 mb-2" href="https://cw-platform.onrender.com/auth/google">
-                  Continue with Google
-                </a>
-                <a className="btn btn-outline-dark btn-sm w-100" href="https://cw-platform.onrender.com/auth/github">
-                  Continue with GitHub
-                </a>
-              </div>
-            )}
-          </div>
+          <Link className="btn btn-outline-light btn-sm" to="/login">
+            Sign In
+          </Link>
         )}
       </div>
     </nav>
