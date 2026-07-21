@@ -14,6 +14,8 @@ function Attributes() {
   const role = getCurrentRole();
   const canManage = role === 'recruiter' || role === 'admin';
 
+  const [categoriesList, setCategoriesList] = useState([]);
+
   async function loadAttributes() {
     try {
       const query = search ? `?search=${encodeURIComponent(search)}` : '';
@@ -24,8 +26,18 @@ function Attributes() {
     }
   }
 
+  async function loadCategories() {
+    try {
+      const data = await apiFetch('/categories');
+      setCategoriesList(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   useEffect(() => {
     loadAttributes();
+    loadCategories();
   }, [search]);
 
   async function handleCreate(e) {
@@ -101,7 +113,12 @@ function Attributes() {
               </select>
             </div>
             <div className="col-md-2">
-              <input className="form-control" placeholder="Category ID" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required />
+              <select className="form-select" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+                <option value="">Select category...</option>
+                {categoriesList.map((cat) => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
             <div className="col-md-2">
               <button type="submit" className="btn btn-primary w-100">Add</button>
