@@ -20,6 +20,7 @@ model User {
   email     String   @unique
   name      String
   role      String   @default("candidate")
+  isBlocked Boolean  @default(false)
   createdAt DateTime @default(now())
   attributeValues AttributeValue[]
   cvs CV[]
