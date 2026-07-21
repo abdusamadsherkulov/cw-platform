@@ -1,7 +1,19 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Navbar() {
   const isLoggedIn = !!localStorage.getItem('token');
+
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((t) => (t === 'light' ? 'dark' : 'light'));
+  }
 
   function handleLogout() {
     localStorage.removeItem('token');
@@ -18,7 +30,11 @@ function Navbar() {
         <Link className="nav-link text-white" to="/projects">Projects</Link>
         <Link className="nav-link text-white" to="/profile">Profile</Link>
       </div>
-      <div className="ms-auto">
+
+      <div className="ms-auto d-flex gap-2">
+        <button className="btn btn-outline-light btn-sm" onClick={toggleTheme}>
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
         {isLoggedIn ? (
           <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>
             Log out

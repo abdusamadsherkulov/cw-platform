@@ -12,6 +12,7 @@ import CVDetail from './pages/CVDetail.jsx';
 import PositionDetail from './pages/PositionDetail.jsx';
 import Projects from './pages/Projects.jsx';
 import Profile from './pages/Profile.jsx';
+import './theme.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
