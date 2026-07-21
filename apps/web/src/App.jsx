@@ -54,6 +54,20 @@ function App() {
           ))}
         </tbody>
       </table>
+
+      <h2 className="mt-4">Tag Cloud</h2>
+      <div className="mb-4">
+        {data.tagCloud.map(({ tag, count }) => (
+          <Link
+            key={tag}
+            to={`/positions`}
+            className="badge bg-secondary text-decoration-none me-2 mb-2"
+            style={{ fontSize: `${0.8 + count * 0.15}rem`, display: 'inline-block' }}
+          >
+            {tag} ({count})
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
