@@ -11,6 +11,7 @@ import CVs from './pages/CVs.jsx';
 import CVDetail from './pages/CVDetail.jsx';
 import PositionDetail from './pages/PositionDetail.jsx';
 import Projects from './pages/Projects.jsx';
+import Profile from './pages/Profile.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/cvs/:id" element={<CVDetail />} />
         <Route path="/positions/:id" element={<PositionDetail />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
