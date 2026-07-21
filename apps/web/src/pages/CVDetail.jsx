@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiFetch } from '../api';
+import { apiFetch, getCurrentRole } from '../api';
 
 function CVDetail() {
   const { id } = useParams();
   const [cv, setCv] = useState(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+
+  const role = getCurrentRole();
+  const canLike = role === 'recruiter' || role === 'admin';
 
   async function loadCv() {
     try {
@@ -47,12 +50,33 @@ function CVDetail() {
     }
   }
 
+  async function handleToggleLike() {
+    setError('');
+    try {
+      if (cv.userLiked) {
+        await apiFetch(`/likes/${id}`, { method: 'DELETE' });
+      } else {
+        await apiFetch(`/likes/${id}`, { method: 'POST' });
+      }
+      loadCv();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   if (!cv) return <div className="container mt-4">Loading...</div>;
 
   return (
     <div className="container mt-4">
       <h1>{cv.position.title}</h1>
       <p>Status: <strong>{cv.status}</strong></p>
+      <p>Likes: {cv.likeCount}
+        {canLike && (
+          <button className="btn btn-sm btn-outline-primary ms-2" onClick={handleToggleLike}>
+            {cv.userLiked ? 'Unlike' : 'Like'}
+          </button>
+        )}
+      </p>
 
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
