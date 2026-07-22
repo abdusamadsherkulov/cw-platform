@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function AllCVs() {
   const [cvs, setCvs] = useState([]);
   const [error, setError] = useState('');
+  const { t } = useTranslation();
 
   async function loadCvs() {
     try {
@@ -21,15 +23,15 @@ function AllCVs() {
 
   return (
     <div className="container mt-4">
-      <h1>All Published CVs</h1>
+      <h1>{t('allCvs.title')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Candidate</th>
-            <th>Position</th>
-            <th>Likes</th>
+            <th>{t('allCvs.colCandidate')}</th>
+            <th>{t('allCvs.colPosition')}</th>
+            <th>{t('allCvs.colLikes')}</th>
           </tr>
         </thead>
         <tbody>

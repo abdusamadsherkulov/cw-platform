@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiFetch, getCurrentRole } from '../api';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Positions() {
   const [positions, setPositions] = useState([]);
@@ -13,6 +14,8 @@ function Positions() {
 
   const role = getCurrentRole();
   const canManage = role === 'recruiter' || role === 'admin';
+
+  const { t } = useTranslation();
 
   async function loadPositions() {
     try {
@@ -62,16 +65,16 @@ function Positions() {
 
   return (
     <div className="container mt-4">
-      <h1>Positions</h1>
+      <h1>{t('positions.title')}</h1>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Attributes</th>
+            <th>{t('positions.colTitle')}</th>
+            <th>{t('positions.colDescription')}</th>
+            <th>{t('positions.colAttributes')}</th>
           </tr>
         </thead>
         <tbody>
@@ -87,16 +90,16 @@ function Positions() {
       
       {canManage && (
         <>
-          <h2>Create New Position</h2>
+          <h2>{t('positions.createNew')}</h2>
           <form onSubmit={handleCreate}>
             <div className="mb-2">
-              <input className="form-control" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+              <input className="form-control" placeholder={t('positions.titlePlaceholder')} value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
             <div className="mb-2">
-              <input className="form-control" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+              <input className="form-control" placeholder={t('positions.descriptionPlaceholder')} value={description} onChange={(e) => setDescription(e.target.value)} required />
             </div>
             <div className="mb-2">
-              <label className="form-label">Attributes:</label>
+              <label className="form-label">{t('positions.attributesLabel')}</label>
               {attributesList.map((attr) => (
                 <div className="form-check" key={attr.id}>
                   <input
@@ -112,7 +115,7 @@ function Positions() {
                 </div>
               ))}
             </div>
-            <button type="submit" className="btn btn-primary">Create Position</button>
+            <button type="submit" className="btn btn-primary">{t('positions.createButton')}</button>
           </form>
         </>
       )}

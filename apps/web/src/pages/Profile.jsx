@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function Profile() {
   const [values, setValues] = useState([]);
@@ -8,6 +9,8 @@ function Profile() {
   const [error, setError] = useState('');
 
   const [attributeToAdd, setAttributeToAdd] = useState('');
+
+  const { t } = useTranslation();
 
   async function loadValues() {
     try {
@@ -62,10 +65,10 @@ function Profile() {
 
   return (
     <div className="container mt-4">
-      <h1>My Profile</h1>
+      <h1>{t('profile.title')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <h2>Info</h2>
+      <h2>{t('profile.info')}</h2>
       <table className="table">
         <tbody>
           {values.map((v) => (
@@ -76,17 +79,17 @@ function Profile() {
 
       <div className="d-flex gap-2 mb-4">
         <select className="form-select" value={attributeToAdd} onChange={(e) => setAttributeToAdd(e.target.value)}>
-          <option value="">Select an attribute to add...</option>
+          <option value="">{t('profile.selectAttribute')}</option>
           {availableToAdd.map((attr) => (
             <option key={attr.id} value={attr.id}>{attr.name} ({attr.category.name})</option>
           ))}
         </select>
-        <button className="btn btn-primary" onClick={handleAddAttribute}>Add</button>
+        <button className="btn btn-primary" onClick={handleAddAttribute}>{t('profile.add')}</button>
       </div>
 
       <div className="d-flex gap-3">
-        <Link to="/projects" className="btn btn-outline-secondary">My Projects</Link>
-        <Link to="/cvs" className="btn btn-outline-secondary">My CVs</Link>
+        <Link to="/projects" className="btn btn-outline-secondary">{t('profile.myProjects')}</Link>
+        <Link to="/cvs" className="btn btn-outline-secondary">{t('profile.myCvs')}</Link>
       </div>
     </div>
   );
@@ -119,8 +122,8 @@ function ValueRow({ value, onRemove, onSaved }) {
         {editing ? (
           <form onSubmit={handleSave} className="d-flex gap-2">
             <input className="form-control" value={input} onChange={(e) => setInput(e.target.value)} autoFocus />
-            <button className="btn btn-sm btn-primary" type="submit">Save</button>
-            <button className="btn btn-sm btn-secondary" type="button" onClick={() => setEditing(false)}>Cancel</button>
+            <button className="btn btn-sm btn-primary" type="submit">{t('cvDetail.save')}</button>
+            <button className="btn btn-sm btn-secondary" type="button" onClick={() => setEditing(false)}>{t('cvDetail.cancel')}</button>
           </form>
         ) : (
           <span onClick={() => setEditing(true)} style={{ cursor: 'pointer' }}>
@@ -130,7 +133,7 @@ function ValueRow({ value, onRemove, onSaved }) {
         {error && <div className="text-danger small">{error}</div>}
       </td>
       <td>
-        <button className="btn btn-sm btn-danger" onClick={() => onRemove(value.attributeId)}>Remove</button>
+        <button className="btn btn-sm btn-danger" onClick={() => onRemove(value.attributeId)}>{t('profile.remove')}</button>
       </td>
     </tr>
   );

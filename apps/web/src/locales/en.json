@@ -1,17 +1,138 @@
 {
   "nav": {
+    "searchPlaceholder": "Search...",
+    "searchButton": "Search",
+    "noResults": "No results found",
     "attributes": "Attributes",
     "positions": "Positions",
     "myCvs": "My CVs",
+    "allCvs": "All CVs",
     "projects": "Projects",
     "profile": "Profile",
+    "users": "Users",
     "logout": "Log out",
-    "login": "Log in with Google"
+    "login": "Sign In",
+    "loading": "Loading..."
   },
   "home": {
     "title": "CV Management Platform",
     "latestPositions": "Latest Positions",
     "popularPositions": "Most Popular Positions",
     "tagCloud": "Tag Cloud"
+  },
+  "attributes": {
+    "title": "Attribute Library",
+    "searchPlaceholder": "Search by name...",
+    "colName": "Name",
+    "colCategory": "Category",
+    "colType": "Type",
+    "colDescription": "Description",
+    "addNew": "Add New Attribute",
+    "namePlaceholder": "Name",
+    "descriptionPlaceholder": "Description",
+    "selectCategory": "Select category...",
+    "addButton": "Add"
+  },
+  "positions": {
+    "title": "Positions",
+    "colTitle": "Title",
+    "colDescription": "Description",
+    "colAttributes": "Attributes",
+    "createNew": "Create New Position",
+    "titlePlaceholder": "Title",
+    "descriptionPlaceholder": "Description",
+    "attributesLabel": "Attributes:",
+    "createButton": "Create Position"
+  },
+  "positionDetail": {
+    "back": "Back to Positions",
+    "editButton": "Edit Title/Description",
+    "save": "Save",
+    "cancel": "Cancel",
+    "attributes": "Attributes",
+    "remove": "Remove",
+    "selectAttribute": "Select an attribute to add...",
+    "add": "Add",
+    "accessRules": "Access Rules",
+    "greaterThan": "greater than",
+    "lessThan": "less than",
+    "equals": "equals",
+    "valuePlaceholder": "Value",
+    "addRule": "Add Rule",
+    "discussion": "Discussion",
+    "postPlaceholder": "Write a message...",
+    "post": "Post"
+  },
+  "cvs": {
+    "title": "My CVs",
+    "colPosition": "Position",
+    "colStatus": "Status",
+    "createForPosition": "Create CV for a Position",
+    "createButton": "Create CV"
+  },
+  "allCvs": {
+    "title": "All Published CVs",
+    "colCandidate": "Candidate",
+    "colPosition": "Position",
+    "colLikes": "Likes"
+  },
+  "cvDetail": {
+    "status": "Status",
+    "likes": "Likes",
+    "like": "Like",
+    "unlike": "Unlike",
+    "attributes": "Attributes",
+    "projects": "Projects",
+    "publish": "Publish CV",
+    "empty": "(empty)",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "projects": {
+    "title": "My Projects",
+    "colName": "Name",
+    "colPeriod": "Period",
+    "colTags": "Tags",
+    "colDescription": "Description",
+    "delete": "Delete",
+    "addNew": "Add New Project",
+    "namePlaceholder": "Project Name",
+    "tagsPlaceholder": "Tags (comma separated)",
+    "descriptionPlaceholder": "Description (Markdown supported)",
+    "addButton": "Add Project",
+    "ongoing": "ongoing"
+  },
+  "profile": {
+    "title": "My Profile",
+    "info": "Info",
+    "selectAttribute": "Select an attribute to add...",
+    "add": "Add",
+    "remove": "Remove",
+    "myProjects": "My Projects",
+    "myCvs": "My CVs"
+  },
+  "users": {
+    "title": "User Management",
+    "colName": "Name",
+    "colEmail": "Email",
+    "colRole": "Role",
+    "colStatus": "Status",
+    "candidate": "Candidate",
+    "recruiter": "Recruiter",
+    "admin": "Admin",
+    "blocked": "Blocked",
+    "active": "Active",
+    "block": "Block",
+    "unblock": "Unblock",
+    "delete": "Delete"
+  },
+  "login": {
+    "title": "Sign In",
+    "google": "Continue with Google",
+    "github": "Continue with GitHub"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
   }
 }

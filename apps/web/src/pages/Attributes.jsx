@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiFetch, getCurrentRole } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function Attributes() {
   const [attributes, setAttributes] = useState([]);
@@ -15,6 +16,8 @@ function Attributes() {
   const canManage = role === 'recruiter' || role === 'admin';
 
   const [categoriesList, setCategoriesList] = useState([]);
+
+  const { t } = useTranslation();
 
   async function loadAttributes() {
     try {
@@ -59,13 +62,13 @@ function Attributes() {
 
   return (
     <div className="container mt-4">
-      <h1>Attribute Library</h1>
+      <h1>{t('attributes.title')}</h1>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
       <input
         className="form-control mb-3"
-        placeholder="Search by name..."
+        placeholder={t('attributes.searchPlaceholder')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -73,10 +76,10 @@ function Attributes() {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th>{t('attributes.colName')}</th>
+            <th>{t('attributes.colCategory')}</th>
+            <th>{t('attributes.colType')}</th>
+            <th>{t('attributes.colDescription')}</th>
           </tr>
         </thead>
         <tbody>
@@ -92,13 +95,13 @@ function Attributes() {
       </table>
       {canManage && (
         <>
-          <h2>Add New Attribute</h2>
+          <h2>{t('attributes.addNew')}</h2>
           <form onSubmit={handleCreate} className="row g-2">
             <div className="col-md-3">
-              <input className="form-control" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+              <input className="form-control" placeholder={t('attributes.namePlaceholder')} value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
             <div className="col-md-3">
-              <input className="form-control" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+              <input className="form-control" placeholder={t('attributes.descriptionPlaceholder')} value={description} onChange={(e) => setDescription(e.target.value)} required />
             </div>
             <div className="col-md-2">
               <select className="form-select" value={type} onChange={(e) => setType(e.target.value)}>
@@ -114,14 +117,14 @@ function Attributes() {
             </div>
             <div className="col-md-2">
               <select className="form-select" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
-                <option value="">Select category...</option>
+                <option value="">{t('attributes.selectCategory')}</option>
                 {categoriesList.map((cat) => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
               </select>
             </div>
             <div className="col-md-2">
-              <button type="submit" className="btn btn-primary w-100">Add</button>
+              <button type="submit" className="btn btn-primary w-100">{t('attributes.addButton')}</button>
             </div>
           </form>
         </>

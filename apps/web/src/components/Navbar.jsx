@@ -62,19 +62,19 @@ function Navbar() {
       <form className="d-flex mx-3 position-relative" onSubmit={handleSearch}>
         <input
           className="form-control form-control-sm"
-          placeholder="Search..."
+          placeholder={t('nav.searchPlaceholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button className="btn btn-sm btn-outline-light ms-1" type="submit">Search</button>
+        <button className="btn btn-sm btn-outline-light ms-1" type="submit">{t('nav.searchButton')}</button>
 
         {results && (
           <div className="position-absolute bg-white text-dark p-2 shadow" style={{ top: '100%', left: 0, zIndex: 10, minWidth: '300px' }}>
-            {results.positions.length === 0 && results.attributes.length === 0 && <p className="mb-0">No results found</p>}
+            {results.positions.length === 0 && results.attributes.length === 0 && <p className="mb-0">{t('nav.noResults')}</p>}
 
             {results.positions.length > 0 && (
               <>
-                <strong>Positions</strong>
+                <strong>{t('nav.positions')}</strong>
                 <ul className="list-unstyled mb-2">
                   {results.positions.map((p) => (
                     <li key={p.id} onClick={() => goToPosition(p.id)} style={{ cursor: 'pointer' }}>{p.title}</li>
@@ -85,7 +85,7 @@ function Navbar() {
 
             {results.attributes.length > 0 && (
               <>
-                <strong>Attributes</strong>
+                <strong>{t('nav.attributes')}</strong>
                 <ul className="list-unstyled mb-0">
                   {results.attributes.map((a) => <li key={a.id}>{a.name}</li>)}
                 </ul>
@@ -100,18 +100,18 @@ function Navbar() {
         {role === 'candidate' ? (
           <Link className="nav-link text-white" to="/cvs">{t('nav.myCvs')}</Link>
         ) : (
-          <Link className="nav-link text-white" to="/all-cvs">All CVs</Link>
+          <Link className="nav-link text-white" to="/all-cvs">{t('nav.allCvs')}</Link>
         )}
         <Link className="nav-link text-white" to="/projects">{t('nav.projects')}</Link>
         <Link className="nav-link text-white" to="/profile">{t('nav.profile')}</Link>
         {role === 'admin' && (
-          <Link className="nav-link text-white" to="/users">Users</Link>
+          <Link className="nav-link text-white" to="/users">{t('nav.users')}</Link>
         )}
       </div>
 
       <div className="ms-auto d-flex gap-2">
         <button className="btn btn-outline-light btn-sm" onClick={toggleTheme}>
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+          {theme === 'light' ? `🌙 {t("theme.dark")}` : `☀️ {t("theme.light")}`}
         </button>
         <button className="btn btn-outline-light btn-sm" onClick={() => changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}>
           {i18n.language === 'en' ? 'RU' : 'EN'}
@@ -122,7 +122,7 @@ function Navbar() {
           </button>
         ) : (
           <Link className="btn btn-outline-light btn-sm" to="/login">
-            Sign In
+            {t('nav.login')}
           </Link>
         )}
       </div>

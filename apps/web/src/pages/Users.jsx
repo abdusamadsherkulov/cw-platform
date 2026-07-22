@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { apiFetch } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
+
+  const { t } = useTranslation();
 
   async function loadUsers() {
     try {
@@ -56,16 +59,16 @@ function Users() {
 
   return (
     <div className="container mt-4">
-      <h1>User Management</h1>
+      <h1>{t('users.title')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
+            <th>{t('users.colName')}</th>
+            <th>{t('users.colEmail')}</th>
+            <th>{t('users.colRole')}</th>
+            <th>{t('users.colStatus')}</th>
             <th></th>
           </tr>
         </thead>
@@ -80,18 +83,18 @@ function Users() {
                   value={u.role}
                   onChange={(e) => handleRoleChange(u.id, e.target.value)}
                 >
-                  <option value="candidate">Candidate</option>
-                  <option value="recruiter">Recruiter</option>
-                  <option value="admin">Admin</option>
+                  <option value="candidate">{t('users.candidate')}</option>
+                  <option value="recruiter">{t('users.recruiter')}</option>
+                  <option value="admin">{t('users.admin')}</option>
                 </select>
               </td>
-              <td>{u.isBlocked ? 'Blocked' : 'Active'}</td>
+              <td>{u.isBlocked ? t('users.blocked') : t('users.active')}</td>
               <td className="d-flex gap-2">
                 <button className="btn btn-sm btn-outline-warning" onClick={() => handleToggleBlock(u.id, u.isBlocked)}>
-                  {u.isBlocked ? 'Unblock' : 'Block'}
+                  {u.isBlocked ? t('users.unblock') : t('users.block')}
                 </button>
                 <button className="btn btn-sm btn-danger" onClick={() => handleDelete(u.id)}>
-                  Delete
+                  {t('users.delete')}
                 </button>
               </td>
             </tr>

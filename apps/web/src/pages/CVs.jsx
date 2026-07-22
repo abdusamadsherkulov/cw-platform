@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../api';
+import { useTranslation } from 'react-i18next';
+
 
 function CVs() {
   const [cvs, setCvs] = useState([]);
   const [positions, setPositions] = useState([]);
   const [error, setError] = useState('');
+  const { t } = useTranslation();
 
   async function loadData() {
     try {
@@ -44,14 +47,14 @@ function CVs() {
 
   return (
     <div className="container mt-4">
-      <h1>My CVs</h1>
+      <h1>{t('cvs.title')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Position</th>
-            <th>Status</th>
+            <th>{t('cvs.colPosition')}</th>
+            <th>{t('cvs.colStatus')}</th>
           </tr>
         </thead>
         <tbody>
@@ -64,13 +67,13 @@ function CVs() {
         </tbody>
       </table>
 
-      <h2>Create CV for a Position</h2>
+      <h2>{t('cvs.createForPosition')}</h2>
       <ul className="list-group">
         {availablePositions.map((pos) => (
           <li key={pos.id} className="list-group-item d-flex justify-content-between align-items-center">
             {pos.title}
             <button className="btn btn-sm btn-primary" onClick={() => handleCreate(pos.id)}>
-              Create CV
+              {t('cvs.createButton')}
             </button>
           </li>
         ))}

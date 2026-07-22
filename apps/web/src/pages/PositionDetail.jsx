@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch, getCurrentRole } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function PositionDetail() {
   const { id } = useParams();
@@ -24,6 +25,8 @@ function PositionDetail() {
 
   const role = getCurrentRole();
   const canManage = role === 'recruiter' || role === 'admin';
+
+  const { t } = useTranslation();
 
   async function loadPosition() {
     try {
@@ -154,14 +157,14 @@ async function handlePostSubmit(e) {
   }
 }
 
-  if (!position) return <div className="container mt-4">Loading...</div>;
+  if (!position) return <div className="container mt-4">{t('nav.loading')}</div>;
 
   const attachedIds = position.attributes.map((a) => a.attributeId);
   const attributesNotYetAdded = attributesList.filter((a) => !attachedIds.includes(a.id));
 
   return (
     <div className="container mt-4">
-      <Link to="/positions">&larr; Back to Positions</Link>
+      <Link to="/positions">&larr; {t('positionDetail.back')}</Link>
 
       {error && <div className="alert alert-danger mt-3">{error}</div>}
       {message && <div className="alert alert-success mt-3">{message}</div>}
@@ -170,32 +173,26 @@ async function handlePostSubmit(e) {
         <form onSubmit={handleSaveInfo} className="mt-3">
           <input className="form-control mb-2" value={title} onChange={(e) => setTitle(e.target.value)} />
           <input className="form-control mb-2" value={description} onChange={(e) => setDescription(e.target.value)} />
-          <button className="btn btn-primary btn-sm" type="submit">Save</button>
-          <button className="btn btn-secondary btn-sm ms-2" type="button" onClick={() => setEditingInfo(false)}>
-            Cancel
-          </button>
+          <button className="btn btn-primary btn-sm" type="submit">{t('positionDetail.save')}</button>
+          <button className="btn btn-secondary btn-sm ms-2" type="button" onClick={() => setEditingInfo(false)}>{t('positionDetail.cancel')}</button>
         </form>
       ) : (
         <div className="mt-3">
           <h1>{position.title}</h1>
           <p>{position.description}</p>
           {canManage && (
-            <button className="btn btn-sm btn-outline-primary" onClick={() => setEditingInfo(true)}>
-              Edit Title/Description
-            </button>
+            <button className="btn btn-sm btn-outline-primary" onClick={() => setEditingInfo(true)}>{t('positionDetail.editButton')}</button>
           )}
         </div>
       )}
 
-      <h2 className="mt-4">Attributes</h2>
+      <h2 className="mt-4">{t('positionDetail.attributes')}</h2>
       <ul className="list-group mb-3">
         {position.attributes.map((posAttr) => (
           <li key={posAttr.attributeId} className="list-group-item d-flex justify-content-between align-items-center">
             {posAttr.attribute.name}
             {canManage && (
-              <button className="btn btn-sm btn-danger" onClick={() => handleRemoveAttribute(posAttr.attributeId)}>
-                Remove
-              </button>
+              <button className="btn btn-sm btn-danger" onClick={() => handleRemoveAttribute(posAttr.attributeId)}>{t('positionDetail.remove')}</button>
             )}
           </li>
         ))}
@@ -204,47 +201,45 @@ async function handlePostSubmit(e) {
       {canManage && (
         <div className="d-flex gap-2">
           <select className="form-select" value={attributeToAdd} onChange={(e) => setAttributeToAdd(e.target.value)}>
-            <option value="">Select an attribute to add...</option>
+            <option value="">{t('positionDetail.selectAttribute')}</option>
             {attributesNotYetAdded.map((attr) => (
               <option key={attr.id} value={attr.id}>{attr.name}</option>
             ))}
           </select>
-          <button className="btn btn-primary" onClick={handleAddAttribute}>Add</button>
+          <button className="btn btn-primary" onClick={handleAddAttribute}>{t('positionDetail.add')}</button>
         </div>
       )}
     
       {canManage && (
         <>
-          <h2 className="mt-4">Access Rules</h2>
+          <h2 className="mt-4">{t('positionDetail.accessRules')}</h2>
           <ul className="list-group mb-3">
             {position.accessRules?.map((rule) => (
               <li key={rule.id} className="list-group-item d-flex justify-content-between align-items-center">
                 {rule.attribute.name} {rule.operator} {rule.value}
-                <button className="btn btn-sm btn-danger" onClick={() => handleRemoveRule(rule.id)}>
-                  Remove
-                </button>
+                <button className="btn btn-sm btn-danger" onClick={() => handleRemoveRule(rule.id)}>{t('positionDetail.remove')}</button>
               </li>
             ))}
           </ul>
 
           <div className="d-flex gap-2">
             <select className="form-select" value={ruleAttributeId} onChange={(e) => setRuleAttributeId(e.target.value)}>
-              <option value="">Select attribute...</option>
+              <option value="">{t('positionDetail.selectAttribute')}</option>
               {attributesList.map((attr) => (
                 <option key={attr.id} value={attr.id}>{attr.name}</option>
               ))}
             </select>
             <select className="form-select" value={ruleOperator} onChange={(e) => setRuleOperator(e.target.value)}>
-              <option value="gt">greater than</option>
-              <option value="lt">less than</option>
-              <option value="eq">equals</option>
+              <option value="gt">{t('positionDetail.greaterThan')}</option>
+              <option value="lt">{t('positionDetail.lessThan')}</option>
+              <option value="eq">{t('positionDetail.equals')}</option>
             </select>
-            <input className="form-control" placeholder="Value" value={ruleValue} onChange={(e) => setRuleValue(e.target.value)} />
-            <button className="btn btn-primary" onClick={handleAddRule}>Add Rule</button>
+            <input className="form-control" placeholder={t('positionDetail.valuePlaceholder')} value={ruleValue} onChange={(e) => setRuleValue(e.target.value)} />
+            <button className="btn btn-primary" onClick={handleAddRule}>{t('positionDetail.addRule')}</button>
           </div>
         </>
       )}
-      <h2 className="mt-4">Discussion</h2>
+      <h2 className="mt-4">{t('positionDetail.discussion')}</h2>
       <ul className="list-group mb-3">
         {posts.map((post) => (
           <li key={post.id} className="list-group-item">
@@ -258,11 +253,11 @@ async function handlePostSubmit(e) {
       <form onSubmit={handlePostSubmit} className="d-flex gap-2 mb-4">
         <input
           className="form-control"
-          placeholder="Write a message..."
+          placeholder={t('positionDetail.postPlaceholder')}
           value={newPost}
           onChange={(e) => setNewPost(e.target.value)}
         />
-        <button className="btn btn-primary" type="submit">Post</button>
+        <button className="btn btn-primary" type="submit">{t('positionDetail.post')}</button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiFetch, getCurrentRole } from '../api';
+import { useTranslation } from 'react-i18next';
 
 function CVDetail() {
   const { id } = useParams();
@@ -11,6 +12,8 @@ function CVDetail() {
   const role = getCurrentRole();
   const canLike = role === 'recruiter' || role === 'admin';
   const canEdit = role === 'candidate' || role === 'admin';
+
+  const { t } = useTranslation();
 
   async function loadCv() {
     try {
@@ -65,16 +68,16 @@ function CVDetail() {
     }
   }
 
-  if (!cv) return <div className="container mt-4">Loading...</div>;
+  if (!cv) return <div className="container mt-4">{t('nav.loading')}</div>;
 
   return (
     <div className="container mt-4">
       <h1>{cv.position.title}</h1>
-      <p>Status: <strong>{cv.status}</strong></p>
-      <p>Likes: {cv.likeCount}
+      <p>{t('cvDetail.status')}: <strong>{cv.status}</strong></p>
+      <p>{t('cvDetail.likes')}: {cv.likeCount}
         {canLike && (
           <button className="btn btn-sm btn-outline-primary ms-2" onClick={handleToggleLike}>
-            {cv.userLiked ? 'Unlike' : 'Like'}
+            {cv.userLiked ? t('cvDetail.unlike') : t('cvDetail.like')}
           </button>
         )}
       </p>
@@ -82,7 +85,7 @@ function CVDetail() {
       {error && <div className="alert alert-danger">{error}</div>}
       {message && <div className="alert alert-success">{message}</div>}
 
-      <h2>Attributes</h2>
+      <h2>{t('cvDetail.attributes')}</h2>
       <table className="table">
         <tbody>
           {cv.fields.map((field) => (
@@ -91,7 +94,7 @@ function CVDetail() {
         </tbody>
       </table>
 
-      <h2>Projects</h2>
+      <h2>{t('cvDetail.projects')}</h2>
       <ul className="list-group mb-3">
         {cv.projects.map((proj) => (
           <li key={proj.id} className="list-group-item">
@@ -102,7 +105,7 @@ function CVDetail() {
 
       {cv.status === 'draft' && (
         <button className="btn btn-success" onClick={handlePublish}>
-          Publish CV
+          {t('cvDetail.publish')}
         </button>
       )}
     </div>
@@ -133,9 +136,9 @@ function FieldRow({ field, onSave, canEdit }) {
               onChange={(e) => setValue(e.target.value)}
               autoFocus
             />
-            <button className="btn btn-sm btn-primary" type="submit">Save</button>
+            <button className="btn btn-sm btn-primary" type="submit">{t('cvDetail.save')}</button>
             <button className="btn btn-sm btn-secondary" type="button" onClick={() => setEditing(false)}>
-              Cancel
+              {t('cvDetail.cancel')}
             </button>
           </form>
         ) : (
@@ -143,7 +146,7 @@ function FieldRow({ field, onSave, canEdit }) {
             onClick={canEdit ? () => setEditing(true) : undefined}
             style={{ cursor: canEdit ? 'pointer' : 'default' }}
           >
-            {isEmpty ? '(empty)' : field.value}
+            {isEmpty ? { text: t('cvDetail.empty') } : field.value}
           </span>
         )}
       </td>
