@@ -44,16 +44,6 @@ body {
   color: var(--text-color) !important;
 }
 
-.profile-btn {
-  border: var(--navbar-btn-text);
-  color: var(--navbar-btn-text);
-}
-
-.profile-btn:hover {
-  background-color: var(--navbar-btn-hover-bg);
-  color: var(--navbar-btn-hover-text);
-}
-
 /* .table thead {
   background-color: var(--navbar-bg);
   color: var(--text-color);

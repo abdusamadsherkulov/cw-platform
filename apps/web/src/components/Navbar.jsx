@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../api';
@@ -22,6 +22,7 @@ function Navbar() {
   const [showSignInOptions, setShowSignInOptions] = useState(false);
 
   const location = useLocation();
+  const searchRef = useRef(null);
 
   function changeLanguage(lang) {
     i18n.changeLanguage(lang);
@@ -32,6 +33,16 @@ function Navbar() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+  function handleClickOutside(e) {
+    if (searchRef.current && !searchRef.current.contains(e.target)) {
+      setResults(null);
+    }
+  }
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, []);
 
   function toggleTheme() {
     setTheme((t) => (t === 'light' ? 'dark' : 'light'));
@@ -66,7 +77,7 @@ function Navbar() {
         <Link className="navbar-brand" to="/" style={{ color: 'var(--navbar-text)' }}>
           CV Platform
         </Link>
-        <form className="d-flex mx-3 position-relative" onSubmit={handleSearch}>
+        <form className="d-flex mx-3 position-relative" onSubmit={handleSearch} ref={searchRef}>
           <input
             className="form-control form-control-sm"
             placeholder={t('nav.searchPlaceholder')}
