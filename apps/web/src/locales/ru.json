@@ -123,7 +123,7 @@
   "users": {
     "title": "Управление пользователями",
     "colName": "Имя",
-    "colEmail": "Email",
+    "colEmail": "Электронная почта",
     "colRole": "Роль",
     "colStatus": "Статус",
     "candidate": "Кандидат",
