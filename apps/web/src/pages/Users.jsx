@@ -85,7 +85,7 @@ function Users() {
 
       <div className="d-flex gap-2 mb-2">
         <button
-          className="btn btn-sm btn-warning"
+          className="btn btn-sm btn-warning text-white"
           disabled={selectedIds.length === 0}
           onClick={() => handleBlockSelected(true)}
         >
