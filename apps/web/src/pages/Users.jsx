@@ -85,14 +85,14 @@ function Users() {
 
       <div className="d-flex gap-2 mb-2">
         <button
-          className="btn btn-sm btn-outline-warning"
+          className="btn btn-sm btn-warning"
           disabled={selectedIds.length === 0}
           onClick={() => handleBlockSelected(true)}
         >
           {t('users.block')}
         </button>
         <button
-          className="btn btn-sm btn-outline-secondary"
+          className="btn btn-sm btn-secondary"
           disabled={selectedIds.length === 0}
           onClick={() => handleBlockSelected(false)}
         >
