@@ -96,41 +96,44 @@ function Profile() {
 }
 
 function ValueRow({ value, onRemove, onSaved }) {
-  const [editing, setEditing] = useState(false);
   const [input, setInput] = useState(value.value);
   const [error, setError] = useState('');
+  const [saveStatus, setSaveStatus] = useState('');
   const { t } = useTranslation();
 
-  async function handleSave(e) {
-    e.preventDefault();
-    setError('');
-    try {
-      await apiFetch(`/profile/${value.attributeId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ value: input, version: value.version }),
-      });
-      setEditing(false);
-      onSaved();
-    } catch (err) {
-      setError(err.message);
-    }
-  }
+  useEffect(() => {
+    if (input === value.value) return;
+
+    const timer = setTimeout(async () => {
+      setSaveStatus('saving');
+      setError('');
+      try {
+        await apiFetch(`/profile/${value.attributeId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ value: input, version: value.version }),
+        });
+        setSaveStatus('saved');
+        onSaved();
+      } catch (err) {
+        setError(err.message);
+        setSaveStatus('');
+      }
+    }, 5000); // wait 5 seconds after the user stops typing
+
+    return () => clearTimeout(timer);
+  }, [input]);
 
   return (
     <tr>
       <td style={{ width: '200px' }}>{value.attribute.name}</td>
       <td>
-        {editing ? (
-          <form onSubmit={handleSave} className="d-flex gap-2">
-            <input className="form-control" value={input} onChange={(e) => setInput(e.target.value)} autoFocus />
-            <button className="btn btn-sm btn-primary" type="submit">{t('cvDetail.save')}</button>
-            <button className="btn btn-sm btn-secondary" type="button" onClick={() => setEditing(false)}>{t('cvDetail.cancel')}</button>
-          </form>
-        ) : (
-          <span onClick={() => setEditing(true)} style={{ cursor: 'pointer' }}>
-            {value.value || '(empty - click to fill)'}
-          </span>
-        )}
+        <input
+          className="form-control"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        {saveStatus === 'saving' && <small className="text-muted">Saving...</small>}
+        {saveStatus === 'saved' && <small className="text-success">Saved</small>}
         {error && <div className="text-danger small">{error}</div>}
       </td>
       <td>
