@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { apiFetch } from '../api';
+import { apiFetch, getCurrentRole } from '../api';
 import { useTranslation } from 'react-i18next';
 
 function Projects() {
@@ -14,9 +14,12 @@ function Projects() {
 
   const { t } = useTranslation();
 
+  const role = getCurrentRole();
+  const isCandidate = role === 'candidate';
+
   async function loadProjects() {
     try {
-      const data = await apiFetch('/projects');
+      const data = await apiFetch(isCandidate ? '/projects' : '/projects/all');
       setProjects(data);
     } catch (err) {
       setError(err.message);
@@ -65,16 +68,18 @@ function Projects() {
       <table className="table table-striped table-borderless">
         <thead>
           <tr>
+            {!isCandidate && <th>Candidate</th>}
             <th>{t('projects.colName')}</th>
             <th>{t('projects.colPeriod')}</th>
             <th>{t('projects.colTags')}</th>
             <th>{t('projects.colDescription')}</th>
-            <th></th>
+            {isCandidate && <th></th>}
           </tr>
         </thead>
         <tbody>
           {projects.map((proj) => (
             <tr key={proj.id}>
+              {!isCandidate && <td>{proj.user.name}</td>}
               <td>{proj.name}</td>
               <td>
                 {new Date(proj.startDate).toLocaleDateString()} -{' '}
@@ -82,37 +87,43 @@ function Projects() {
               </td>
               <td>{proj.tags.join(', ')}</td>
               <td>{proj.description}</td>
-              <td>
+              {isCandidate && (
+                <td>
                 <button className="btn btn-sm btn-danger" onClick={() => handleDelete(proj.id)}>
                   {t('projects.delete')}
                 </button>
               </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
 
-      <h2>{t('projects.addNew')}</h2>
-      <form onSubmit={handleCreate} className="row g-2">
-        <div className="col-md-3">
-          <input className="form-control" placeholder={t('projects.namePlaceholder')} value={name} onChange={(e) => setName(e.target.value)} required />
-        </div>
-        <div className="col-md-2">
-          <input className="form-control" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
-        </div>
-        <div className="col-md-2">
-          <input className="form-control" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="End (optional)" />
-        </div>
-        <div className="col-md-3">
-          <input className="form-control" placeholder={t('projects.tagsPlaceholder')} value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} />
-        </div>
-        <div className="col-md-2">
-          <button type="submit" className="btn btn-primary w-100">{t('projects.addButton')}</button>
-        </div>
-        <div className="col-12">
-          <textarea className="form-control" placeholder={t('projects.descriptionPlaceholder')} value={description} onChange={(e) => setDescription(e.target.value)} required />
-        </div>
-      </form>
+      {isCandidate && (
+        <>
+          <h2>{t('projects.addNew')}</h2>
+          <form onSubmit={handleCreate} className="row g-2">
+            <div className="col-md-3">
+              <input className="form-control" placeholder={t('projects.namePlaceholder')} value={name} onChange={(e) => setName(e.target.value)} required />
+            </div>
+            <div className="col-md-2">
+              <input className="form-control" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+            </div>
+            <div className="col-md-2">
+              <input className="form-control" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="End (optional)" />
+            </div>
+            <div className="col-md-3">
+              <input className="form-control" placeholder={t('projects.tagsPlaceholder')} value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} />
+            </div>
+            <div className="col-md-2">
+              <button type="submit" className="btn btn-primary w-100">{t('projects.addButton')}</button>
+            </div>
+            <div className="col-12">
+              <textarea className="form-control" placeholder={t('projects.descriptionPlaceholder')} value={description} onChange={(e) => setDescription(e.target.value)} required />
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 }
