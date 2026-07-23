@@ -100,13 +100,13 @@ function Profile() {
       <h1 className="mb-4">{t('profile.title')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <h2>Me</h2>
+      <h2>{t('profile.me')}</h2>
       <div className="d-flex justify-content-center mb-2">
         <div className="row g-2" style={{ maxWidth: '600px', width: '100%' }}>
           <div className="col-md-4">
             <input
               className="form-control"
-              placeholder="First Name"
+              placeholder={t('profile.firstName')}
               value={meFields.firstName}
               onChange={(e) => setMeFields((f) => ({ ...f, firstName: e.target.value }))}
             />
@@ -114,7 +114,7 @@ function Profile() {
           <div className="col-md-4">
             <input
               className="form-control"
-              placeholder="Last Name"
+              placeholder={t('profile.lastName')}
               value={meFields.lastName}
               onChange={(e) => setMeFields((f) => ({ ...f, lastName: e.target.value }))}
             />
@@ -122,7 +122,7 @@ function Profile() {
           <div className="col-md-4">
             <input
               className="form-control"
-              placeholder="Location"
+              placeholder={t('profile.location')}
               value={meFields.location}
               onChange={(e) => setMeFields((f) => ({ ...f, location: e.target.value }))}
             />

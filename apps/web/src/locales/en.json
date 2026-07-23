@@ -120,7 +120,11 @@
     "myProjects": "My Projects",
     "myCvs": "My CVs",
     "saving": "Saving...",
-    "saved": "Saved"
+    "saved": "Saved",
+    "me": "Me",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "location": "Location"
   },
   "users": {
     "title": "User Management",
