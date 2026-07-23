@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="container mt-4">
-      <h1>{t('home.title')}</h1>
+      <h1 className="mb-4">{t('home.title')}</h1>
 
       <div className="row mb-4">
         <div className="col"><div className="card text-center p-3"><h3>{data.stats.totalPositions}</h3><p>{t('home.positions')}</p></div></div>

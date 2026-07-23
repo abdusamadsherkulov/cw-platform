@@ -127,7 +127,7 @@ function ValueRow({ value, onRemove, onSaved }) {
   return (
     <tr>
       <td style={{ width: '200px' }}>{value.attribute.name}</td>
-      <td style={{ width: '100%' }}>
+      <td>
         <input
           className="form-control"
           style = {{maxWidth: '300px'}}

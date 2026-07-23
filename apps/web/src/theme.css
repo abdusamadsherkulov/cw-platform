@@ -40,7 +40,8 @@ body {
 }
 
 .card, .card.text-center {
-  background-color: #ffffff;
+  background-color: var(--navbar-bg);
+  border: 0px;
   color: var(--text-color) !important;
 }
 
