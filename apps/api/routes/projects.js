@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '../generated/prisma/index.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth, requireRole } from '../middleware/auth.js';
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -14,13 +14,43 @@ router.get('/', requireAuth, async (req, res) => {
   res.json(projects);
 });
 
-// create a project
+// admin/recruiter view all projects across all candidates
+router.get('/all', requireAuth, requireRole('recruiter', 'admin'), async (req, res) => {
+  const projects = await prisma.project.findMany({
+    include: { user: true },
+    orderBy: { startDate: 'desc' },
+  });
+  res.json(projects);
+});
+
+// view a specific candidate's projects - admin/recruiter (read) or the candidate themself
+router.get('/user/:userId', requireAuth, async (req, res) => {
+  const targetUserId = Number(req.params.userId);
+
+  if (req.user.role === 'candidate' && req.user.userId !== targetUserId) {
+    return res.status(403).json({ error: 'Not authorized' });
+  }
+
+  const projects = await prisma.project.findMany({
+    where: { userId: targetUserId },
+    orderBy: { startDate: 'desc' },
+  });
+  res.json(projects);
+});
+
+// create a project - candidate creates their own, or admin creates on behalf of any candidate
 router.post('/', requireAuth, async (req, res) => {
-  const { name, startDate, endDate, description, tags } = req.body;
+  const { name, startDate, endDate, description, tags, userId } = req.body;
+
+  const targetUserId = req.user.role === 'admin' && userId ? Number(userId) : req.user.userId;
+
+  if (req.user.role === 'recruiter') {
+    return res.status(403).json({ error: 'Recruiters cannot create projects' });
+  }
 
   const project = await prisma.project.create({
     data: {
-      userId: req.user.userId,
+      userId: targetUserId,
       name,
       startDate: new Date(startDate),
       endDate: endDate ? new Date(endDate) : null,
