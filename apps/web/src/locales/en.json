@@ -99,6 +99,8 @@
   },
   "projects": {
     "title": "My Projects",
+    "titleAdminRecruiter": "All Projects",
+    "colCandidate": "Candidate",
     "colName": "Name",
     "colPeriod": "Period",
     "colTags": "Tags",

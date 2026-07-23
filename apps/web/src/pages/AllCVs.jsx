@@ -37,7 +37,7 @@ function AllCVs() {
         <tbody>
           {cvs.map((cv) => (
             <tr key={cv.id}>
-              <td>{displayName(cv.user)}</td>
+              <td><Link to={`/candidates/${cv.user.id}`}>{displayName(cv.user)}</Link></td>
               <td><Link to={`/cvs/${cv.id}`}>{cv.position.title}</Link></td>
               <td>{cv.likeCount}</td>
             </tr>

@@ -62,13 +62,13 @@ function Projects() {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">{t('projects.title')}</h1>
+      <h1 className="mb-4">{t(isCandidate ? 'projects.title' : 'projects.titleAdminRecruiter')}</h1>
       {error && <div className="alert alert-danger">{error}</div>}
 
       <table className="table table-striped table-borderless">
         <thead>
           <tr>
-            {!isCandidate && <th>Candidate</th>}
+            {!isCandidate && <th>{t('projects.colCandidate')}</th>}
             <th>{t('projects.colName')}</th>
             <th>{t('projects.colPeriod')}</th>
             <th>{t('projects.colTags')}</th>

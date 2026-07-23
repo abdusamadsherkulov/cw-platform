@@ -16,6 +16,7 @@ import Profile from './pages/Profile.jsx';
 import Users from './pages/Users.jsx';
 import AllCVs from './pages/AllCVs.jsx';
 import Login from './pages/Login.jsx';
+import CandidateProfile from './pages/CandidateProfile.jsx';
 import './i18n.js';
 
 createRoot(document.getElementById('root')).render(
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/users" element={<Users />} />
         <Route path="/all-cvs" element={<AllCVs />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/candidates/:userId" element={<CandidateProfile />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
